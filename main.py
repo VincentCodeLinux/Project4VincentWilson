@@ -22,17 +22,25 @@ with graphics.window(label="Info Graph", width=800, height=1000):
         graphics.draw_text((0, 810), "100k", size=13)
         graphics.draw_text((0, 910), "0k", size=13)
 
+    for state in v_states:
+        for line in info:
+            line_info = line.split(";")
+            name_state = line_info[1].strip()
+            if name_state == state:
+                median_income = float(line_info[4])
+                median_house_price = float(line_info[5])
+                bar_height = median_house_price/1000
+                if median_house_price <= 3 * median_income:
+                    bar_color = comp151Colors.BLUE
+                elif median_house_price <= 4 * median_income:
+                    bar_color = comp151Colors.YELLOW
+                else:
+                    bar_color = comp151Colors.RED
 
-    for line in info:
-        line_info = line.split(";")
-        name_state = line_info[0].strip()
-        median_house_price = float(line_info[5])
-        bar_height = median_house_price/1000
-        bar_color= comp151Colors.BLUE
-        graphics.draw_rectangle((next_bar_start, 910-bar_height), (next_bar_start+bar_width, 910),
+                graphics.draw_rectangle((next_bar_start, 910-bar_height), (next_bar_start+bar_width, 910),
                                fill=bar_color)
-        graphics.draw_text((next_bar_start + 10, 920), name_state, size=13)
-        next_bar_start += bar_width+30
+                graphics.draw_text((next_bar_start + 10, 920), name_state, size=13)
+                next_bar_start += bar_width+30
 
 graphics.setup_dearpygui()
 graphics.show_viewport()
